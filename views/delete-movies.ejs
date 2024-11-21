@@ -1,0 +1,233 @@
+<!-- views/delete-movies.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Movies</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- SweetAlert CDN for styling and functionality -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.0/dist/sweetalert2.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.0/dist/sweetalert2.min.js"></script>
+
+    <style>
+        
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        color: #ddd;; /* Tomato color for the title */
+        text-align: center;
+        font-size: 3em;
+        font-weight: 600;
+        margin-top: 30px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px 15px;
+        text-align: left;
+        font-size: 1.1em;
+      }
+
+      th {
+        background-color: #f1f1f1;
+        color: #333;
+        font-weight: 600;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      button {
+        background-color: #ff6347; /* Tomato color for button */
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-size: 1.1em;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background-color 0.3s, box-shadow 0.3s ease-in-out;
+      }
+
+      button:hover {
+        background-color: #d9534f; /* Darker red for hover */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      button:active {
+        background-color: #c9302c; /* Even darker red on click */
+      }
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* background-color: #f4f4f4; */
+            background-color: #899499;
+            color: #333;
+        }
+
+        header {
+            background-color: #222;
+            color: #f5c518;
+            padding: 1em 0;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2em;
+        }
+
+        .navbar h1 {
+            font-size: 1.8em;
+            color: #f5c518;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar a {
+            color: #f5c518;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffd700;
+        }
+    </style>
+  </head>
+  <body>
+    <header>
+        <nav class="navbar">
+            <h1>Movie Tickets</h1>
+            <ul>
+                <li><a href="/admin-home">Home</a></li>
+                <li><a href="/index">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>Delete Movies</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Language</th>
+          <th>Genre</th>
+          <th>Location</th>
+          <th>Release Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% movies.forEach(movie => { %>
+        <tr>
+          <td><%= movie.title %></td>
+          <td><%= movie.language %></td>
+          <td><%= movie.genre %></td>
+          <td><%= movie.location %></td>
+          <td><%= movie.releaseDate.toDateString() %></td>
+          <td>
+            <!-- Delete button for each movie -->
+            <form
+              action="/delete-movies/<%= movie.title %>"
+              method="post"
+              style="display: inline"
+              onsubmit="return confirmDelete(event, '<%= movie.title %>')"
+            >
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <script>
+        function confirmDelete(event, movieTitle) {
+          // Prevent the form from submitting immediately
+          event.preventDefault();
+      
+          // SweetAlert confirmation popup for delete action
+          Swal.fire({
+            title: `Are you sure you want to delete the movie: "${movieTitle}"?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+            reverseButtons: true,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // If confirmed, submit the form
+              event.target.submit();
+      
+              // Show success message and redirect immediately after deletion
+              Swal.fire({
+                title: "Deleted!",
+                text: "The movie has been deleted successfully.",
+                icon: "success",
+                showCancelButton: false,
+                confirmButtonText: "OK",
+              }).then(() => {
+                // Redirect to the main page after clicking OK
+                window.location.href = "/"; // Change '/' to the appropriate redirect URL if needed
+              });
+            }
+          });
+        }
+      </script>
+      
+      
+  </body>
+</html>

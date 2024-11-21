@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #222;
+            color: #f5c518;
+            padding: 1em 0;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2em;
+        }
+
+        .navbar h1 {
+            font-size: 1.8em;
+            color: #f5c518;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar a {
+            color: #f5c518;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffd700;
+        }
+
+        .container {
+            display: flex;
+            margin-top: 0;
+        }
+
+        .left-column {
+            width: 20%;
+            padding: 20px;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: #fff;
+            position: fixed;
+            top: 64px; /* Adjust to match the height of the header */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .left-column p {
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .left-column label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .right-column {
+            width: 80%;
+            padding: 20px;
+            background-color: #ecf0f1;
+            margin-left: 20%;
+            min-height: 100vh;
+        }
+
+        .right-column h2 {
+            margin-bottom: 15px;
+        }
+
+        .right-column table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .right-column table, .right-column th, .right-column td {
+            border: 1px solid #ccc;
+        }
+
+        .right-column th, .right-column td {
+            padding: 10px;
+            text-align: left;
+            font-size: 1em;
+        }
+
+        .right-column th {
+            background-color: #34495e;
+            color: #fff;
+        }
+
+        .right-column td input {
+            width: 100%;
+            padding: 8px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #f5c518;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>Movie Tickets</h1>
+            <ul>
+                <li><a href="/index">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="left-column">
+            <form action="/admin-home" method="post" class="action-form">
+               <center> <p>SELECT AN ACTION:</p></center><br>
+                
+                <label>
+                    <input type="radio" name="action" value="view" required>
+                    View Movie Details
+                </label>
+                
+                <label>
+                    <input type="radio" name="action" value="add">
+                    Add Movie
+                </label>
+                
+                <label>
+                    <input type="radio" name="action" value="delete">
+                    Delete Movie
+                </label><br>
+                
+                <center><button type="submit">Submit</button></center>  
+            </form>
+        </div>
+
+        <div class="right-column">
+            <% if (typeof action !== "undefined" && action === "add") { %>
+                <h2>Add New Movie</h2>
+                <form action="/add-movie" method="post">
+                    <table>
+                        <tr>
+                            <th>Field</th>
+                            <th>Input</th>
+                        </tr>
+                        <tr>
+                            <td>Title:</td>
+                            <td><input type="text" name="title" required></td>
+                        </tr>
+                        <tr>
+                            <td>Language:</td>
+                            <td><input type="text" name="language" required></td>
+                        </tr>
+                        <tr>
+                            <td>Genre:</td>
+                            <td><input type="text" name="genre" required></td>
+                        </tr>
+                        <tr>
+                            <td>Location:</td>
+                            <td><input type="text" name="location" required></td>
+                        </tr>
+                        <tr>
+                            <td>Release Date:</td>
+                            <td><input type="date" name="releaseDate" required></td>
+                        </tr>
+                        <tr>
+                            <td>Poster URL:</td>
+                            <td><input type="text" name="posterUrl" required></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Theatre Details</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Theatre ID:</td>
+                            <td><input type="text" name="theatreId" required></td>
+                        </tr>
+                        <tr>
+                            <td>Theatre Name:</td>
+                            <td><input type="text" name="theatreName" required></td>
+                        </tr>
+                        <tr>
+                            <td>Theatre Location:</td>
+                            <td><input type="text" name="theatreLocation" required></td>
+                        </tr>
+                        <tr>
+                            <td>Available Seats:</td>
+                            <td><input type="number" name="availableSeats" required></td>
+                        </tr>
+                        <tr>
+                            <td>Showtime:</td>
+                            <td><input type="text" name="showtime" required></td>
+                        </tr>
+                    </table>
+                    <center><button type="submit">Add Movie</button></center>
+                </form>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Tickets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #899499;
+            /* background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-hZcdERQLq9a2FE2Y6k3aAJ1EoRanpSwocA&s'); */
+            color: #333;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        header {
+            background-color: #222;
+            color: #f5c518;
+            padding: 1em 0;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            margin-bottom: 0%;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2em;
+        }
+
+        .navbar h1 {
+            font-size: 1.8em;
+            color: #f5c518;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar a {
+            color: #f5c518;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffd700;
+        }
+
+        /* Main layout */
+        .main-content {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 10px;
+        }
+
+        /* Filter section */
+        .filter-section {
+            background-color:  #dddddd;;
+            padding: 25px;
+            width: 240px;
+            height: 150vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            left: 0;
+        }
+
+        .filter-section form select,
+        .filter-section form button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .filter-section form button {
+            background-color: #f5c518;
+            color: #333;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .filter-section form button:hover {
+            background-color: #ffd700;
+        }
+
+        /* Label styles */
+        .filter-section label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        /* Checkbox and select spacing */
+        .filter-section div {
+            margin-bottom: 20px;
+            margin-top:0px;
+        }
+
+        /* Movie section */
+        .movie-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 80px;
+            padding: 20px;
+            flex-grow: 1;
+            margin-left: 260px;
+           
+        }
+
+        .movie-card {
+            /* background-color: #fff; */
+            background-color: #dddddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .movie-card h3 {
+            color: #222;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .movie-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        /* Image styling with fixed size and border-radius */
+        .movie-card img {
+            width: 100%;
+            max-width: 200px;
+            height: 300px; /* Fixed height for uniformity */
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .movie-card button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ff6347;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .movie-card button:hover {
+            background-color: #ff7f50;
+        }
+        /* Button Styling */
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #ff6347;
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #ff7f50;
+    transform: scale(1.05); /* Slight scaling effect */
+}
+
+/* Movie Section Styling */
+.movie-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 20px;
+    flex-grow: 1;
+    margin-left: 260px;
+    justify-items: center; /* Ensures the items are centered */
+    background-color: #f8f8f8; /* Light background for movie section */
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.movie-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow around cards */
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px); /* Slight upward hover effect */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+.movie-card h3 {
+    color: #333;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.movie-card p {
+    color: #777;
+    font-size: 1em;
+    margin-bottom: 8px;
+}
+
+.movie-card img {
+    width: 100%;
+    max-width: 200px;
+    height: 300px; /* Fixed height for uniformity */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.movie-card a {
+    text-decoration: none;
+}
+
+.movie-card button {
+    padding: 12px 25px;
+    font-size: 1.1em;
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.movie-card button:hover {
+    background-color: #ff7f50;
+    transform: scale(1.05);
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>Movie Tickets</h1>
+            <ul>
+                <li><a href="/index">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <!-- Filter Section -->
+        <aside class="filter-section">
+            <form method="get" action="/home">
+                <!-- Sort By dropdown -->
+                <label for="sortBy">Sort By:</label><br>
+                <select name="sortBy" id="sortBy">
+                    <option value="">Select...</option>
+                    <option value="newToOld">Newest to Oldest</option>
+                    <option value="oldToNew">Oldest to Newest</option>
+                </select>
+
+                <!-- Language checkboxes -->
+                <div>
+                    <label>Language:</label><br>
+                    <input type="checkbox" name="language" value="Tamil"> Tamil<br>
+                    <input type="checkbox" name="language" value="English"> English<br>
+                    <input type="checkbox" name="language" value="Hindi"> Hindi<br>
+                </div>
+
+                <!-- Genre checkboxes -->
+                <div>
+                    <label>Genre:</label><br>
+                    <input type="checkbox" name="genre" value="Comedy"> Comedy<br>
+                    <input type="checkbox" name="genre" value="Action"> Action<br>
+                    <input type="checkbox" name="genre" value="Drama"> Drama<br>
+                    <input type="checkbox" name="genre" value="Horror"> Horror<br>
+                    <input type="checkbox" name="genre" value="Sci-fi"> Sci-fi<br>
+                </div>
+
+                <!-- Location checkboxes -->
+                <div>
+                    <label>Location:</label><br>
+                    <input type="checkbox" name="location" value="Vellore"> Vellore<br>
+                    <input type="checkbox" name="location" value="Chennai"> Chennai<br>
+                </div>
+
+                <button type="submit">Filter</button>
+            </form>
+        </aside>
+
+        <!-- Movie Section -->
+        <section class="movie-section">
+            <% movies.forEach(movie => { %>
+                <div class="movie-card">
+                    <h3><%= movie.title %></h3>
+                    <img src="<%= movie.posterUrl %>" alt="<%= movie.title %> Poster">
+                    <p>Language: <%= movie.language %></p>
+                    <p>Genre: <%= movie.genre %></p>
+                    <p>Location: <%= movie.location %></p>
+                    <a href="/book/<%= movie.title %>">
+                        <button>Book Show</button>
+                    </a>
+                </div>
+            <% }) %>
+        </section>
+    </div>
+</body>
+</html>

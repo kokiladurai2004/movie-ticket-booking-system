@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmation</title>
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Booking Confirmation</h1>
+    </header>
+
+    <section>
+        <h2>Your Booking Details</h2>
+        <p><strong>Movie Name:</strong> <span id="movieTitle"></span></p>
+        <p><strong>Theatre:</strong> <span id="theatreName"></span></p>
+        <p><strong>Seats:</strong> <span id="seatsSummary"></span></p>
+        <p><strong>Showtime:</strong> <span id="showtime"></span></p>
+        <p><strong>Total Amount:</strong> ₹<span id="totalAmount"></span></p>
+
+        <button onclick="proceedToPayment()">Proceed to Payment</button>
+    </section>
+
+    <script>
+        // Get URL parameters
+        const params = new URLSearchParams(window.location.search);
+
+        // Extract values from query parameters
+        const movieTitle = params.get('movieTitle');
+        const theatreName = params.get('theatreName');
+        const seatsSummary = params.get('seats');
+        const amount = params.get('amount');
+        const showtime = params.get('showtime');
+
+        // Display the booking details on the page
+        document.getElementById('movieTitle').innerText = movieTitle;
+        document.getElementById('theatreName').innerText = theatreName;
+        document.getElementById('seatsSummary').innerText = seatsSummary;
+        document.getElementById('showtime').innerText = showtime;
+        document.getElementById('totalAmount').innerText = amount;
+
+        function proceedToPayment() {
+            // Implement the payment processing logic here
+            alert("Proceeding to payment...");
+        }
+    </script>
+
+    <footer>
+        <a href="/home">Back to Movies List</a>
+    </footer>
+</body>
+
+</html>

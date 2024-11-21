@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title><%= movie.title %> - Details</title>
+    <style>
+        /* Global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            font-family: "Georgia", Times, serif; 
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #899499;
+            color: #333;
+            font-family: "Georgia", Times, serif; 
+        }
+
+        header {
+            background-color: #222;
+            color: #f5c518;
+            padding: 1em 0;
+            position: sticky;
+            top: 0;
+            width: 100%;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2em;
+        }
+
+        .navbar h1 {
+            font-size: 1.8em;
+            color: #f5c518;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar a {
+            color: #f5c518;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        /* Layout styles */
+        .main-content {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            width: 100%;
+            font-family: "Georgia", Times, serif;
+
+        }
+
+        .poster-column, .details-column, .seat-column {
+            padding: 10px;
+            background-color: #dddddd;
+            border-radius: 8px;
+        }
+
+        .poster-column {
+            flex: 1;
+            text-align: center;
+        }
+
+        .poster-column img {
+            max-width: 300px;
+            height: 400px;
+            border-radius: 5px;
+        }
+
+        .details-column {
+            flex: 1;
+        }
+
+        .seat-column {
+            flex: 2;
+        }
+
+        /* Seat layout styles */
+        #seatingLayout {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+            justify-items: center;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            background-color: #e0e0e0;
+            border: 2px solid #333;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .seat:hover {
+            background-color: #cccccc;
+            transform: scale(1.05);
+        }
+
+        .seat.selected {
+            background-color: blue;
+            color: white;
+        }
+
+        .seat:disabled {
+            background-color: #999;
+            color: white;
+            cursor: not-allowed;
+        }
+        .table-container {
+    border: 3px solid #333; /* Thick outer border */
+    padding: 5px; /* Space between outer border and table */
+    display: inline-block; /* Keeps the border tight around the table */
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    border: 2px solid #C0C0C0;
+}
+
+.styled-table td, .styled-table th {
+    border: 2px solid #C0C0C0;
+    padding: 10px;
+    text-align: left;
+}
+
+.styled-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+    /* General Button Styles */
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s, transform 0.2s;
+    }
+
+    /* Book Show and Confirm Booking Button */
+    button[type="button"] {
+        background-color: #333; /* Green */
+        color: white;
+        box-shadow: 0 4px #333;
+        margin-top: 15px;
+    }
+
+    /* Hover Effect for Book Show and Confirm Booking Button */
+    button[type="button"]:hover {
+        background-color: #899499;
+        color:#333;
+        transform: scale(1.05);
+    }
+
+    /* Click Effect for Book Show and Confirm Booking Button */
+    button[type="button"]:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px #333;
+    }
+
+    /* Hover Effect for Seat Buttons */
+    .seat {
+        background-color: #e0e0e0;
+        color: #333;
+    }
+
+    .seat:hover:not(.selected):not(:disabled) {
+        background-color: #b3b3b3;
+        transform: scale(1.1);
+    }
+
+    /* Selected Seat Style */
+    .seat.selected {
+        background-color: blue;
+        color: white;
+    }
+
+    /* Disabled Seat Style */
+    .seat:disabled {
+        background-color: #999;
+        color: white;
+        cursor: not-allowed;
+    }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>Movie Tickets</h1>
+            <ul>
+                <li><a href="/home">Movies</a></li>
+                <li><a href="/index">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <!-- Poster Column -->
+        <div class="poster-column">
+            <h1><%= movie.title %></h1>
+            <img src="<%= movie.posterUrl %>" alt="<%= movie.title %> Poster">
+        </div>
+
+        <!-- Details and Theatre Selection Column -->
+        <div class="details-column">
+            <center>
+                <h2>MOVIE DETAILS</h2>
+                <table class="styled-table" >
+                    <tr><td><strong>Title:</strong></td><td><%= movie.title %></td></tr>
+                    <tr><td><strong>Language:</strong></td><td><%= movie.language %></td></tr>
+                    <tr><td><strong>Genre:</strong></td><td><%= movie.genre %></td></tr>
+                    <tr><td><strong>Location:</strong></td><td><%= movie.location %></td></tr>
+                </table>
+            </center>
+            <br>
+            <center><h2>SELECT THEATRE</h2></center>
+            <form id="bookingForm">
+                <center>
+                    <table class="styled-table">
+                        <tr>
+                            <td><label for="theatreSelect">Theatre:</label></td>
+                            <td>
+                                <select id="theatreSelect" name="theatre" onchange="updateShowtimes()" required>
+                                    <option value="">Select a Theatre</option>
+                                    <% movie.theatres.forEach((theatre) => { %>
+                                        <option value="<%= JSON.stringify(theatre) %>"><%= theatre.name %> - <%= theatre.location %></option>
+                                    <% }) %>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="showtimeSelect">Showtime:</label></td>
+                            <td><div id="showtimeContainer"></div></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <button type="button" onclick="bookShow()">Book Show</button>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+            </form>
+        </div>
+
+        <!-- Seat Layout Column -->
+        <div class="seat-column">
+            <section id="seatLayoutSection" style="display: none;">
+                <h2>Select Seats</h2>
+                <div id="seatingLayout"></div><br><br>
+          <center>
+            <button type="button" onclick="confirmBooking()">Confirm Booking</button>
+          </center>     
+            </section>
+        </div>
+    </div>
+
+    <script>
+        let selectedSeats = [];
+
+        function updateShowtimes() {
+            const selectedTheatre = document.getElementById('theatreSelect').value;
+            const showtimeContainer = document.getElementById('showtimeContainer');
+            showtimeContainer.innerHTML = '';
+
+            if (!selectedTheatre) return;
+
+            const theatreDetails = JSON.parse(selectedTheatre);
+            theatreDetails.showtimes.forEach(showtime => {
+                const showtimeLabel = document.createElement('label');
+                const showtimeRadio = document.createElement('input');
+                showtimeRadio.type = 'radio';
+                showtimeRadio.name = 'showtime';
+                showtimeRadio.value = showtime.time;
+                showtimeRadio.required = true;
+
+                showtimeLabel.appendChild(showtimeRadio);
+                showtimeLabel.appendChild(document.createTextNode(` ${showtime.time}`));
+                showtimeContainer.appendChild(showtimeLabel);
+                showtimeContainer.appendChild(document.createElement('br'));
+            });
+        }
+
+        function bookShow() {
+            const selectedShowtime = document.querySelector('input[name="showtime"]:checked');
+            const selectedTheatre = document.getElementById('theatreSelect').value;
+            if (selectedShowtime && selectedTheatre) {
+                const theatreDetails = JSON.parse(selectedTheatre);
+                const showtime = selectedShowtime.value;
+                const seatLayoutSection = document.getElementById('seatLayoutSection');
+                seatLayoutSection.style.display = 'block';
+                generateSeatingLayout(theatreDetails, showtime);
+            } else {
+                alert('Please select a theatre and showtime');
+            }
+        }
+
+        function generateSeatingLayout(theatreDetails, showtime) {
+            const layoutContainer = document.getElementById('seatingLayout');
+            layoutContainer.innerHTML = '';
+            const bookedSeats = new Set();
+            const showtimeDetails = theatreDetails.showtimes.find(st => st.time === showtime);
+
+            if (showtimeDetails) {
+                showtimeDetails.bookedSeats.forEach(seat => bookedSeats.add(seat));
+            }
+
+            const rowCount = 5;
+            const colCount = 10;
+            let seatCount = 0;
+
+            for (let i = 0; i < rowCount; i++) {
+                for (let j = 0; j < colCount; j++) {
+                    const seat = document.createElement('button');
+                    seat.classList.add('seat');
+                    const seatNumber = seatCount + 1;
+                    seat.disabled = bookedSeats.has(seatNumber);
+                    seat.innerText = seatNumber;
+                    seat.addEventListener('click', () => selectSeat(seat, seatNumber));
+                    layoutContainer.appendChild(seat);
+                    seatCount++;
+                }
+            }
+        }
+
+        function selectSeat(seat, seatNumber) {
+            if (seat.disabled) return;
+
+            if (seat.classList.contains('selected')) {
+                seat.classList.remove('selected');
+                selectedSeats = selectedSeats.filter(num => num !== seatNumber);
+            } else {
+                seat.classList.add('selected');
+                selectedSeats.push(seatNumber);
+            }
+        }
+
+        // function confirmBooking() {
+        //     if (selectedSeats.length === 0) {
+        //         alert('No seats selected');
+        //         return;
+        //     }
+        //     alert(`Seats booked successfully: ${selectedSeats.join(', ')}`);
+        // }
+        function confirmBooking() {
+    const amount = selectedSeats.length * 150; // 150 rupees per seat
+    const seatsSummary = selectedSeats.map(seat => `${seat}`).join(',');
+    
+    // Get the selected theatre and showtime
+    const selectedTheatre = document.getElementById('theatreSelect').value;
+    const selectedShowtime = document.querySelector('input[name="showtime"]:checked').value;
+
+    const theatreDetails = JSON.parse(selectedTheatre);
+    const theatreName = theatreDetails.name;
+    const showtime = selectedShowtime;
+
+    // Create the booking summary as query parameters
+    const queryParams = new URLSearchParams({
+        movie: '<%= movie.title %>',
+        theatre: theatreName,
+        showtime: showtime,
+        seats: seatsSummary,
+        amount: amount
+    }).toString();
+
+    // Redirect to the payment page with the booking details
+    window.location.href = `/payment?${queryParams}`;
+}
+    </script>
+</body>
+</html>

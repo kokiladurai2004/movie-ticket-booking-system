@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Movie Ticket Booking System</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        /* justify-content: center; */
+        min-height: 100vh;
+        background-image: url("https://www.shutterstock.com/image-photo/movie-tickets-online-booking-app-260nw-2161653799.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+      }
+
+      .content-wrapper {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end; /* Align to the right */
+        width: 90%;
+        max-width: 1200px;
+      }
+
+      h2 {
+       
+        color: #ff6347;
+        font-size: 2em;
+        
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        text-align: right; /* Align title text to the right */
+        margin-top:0px;
+      }
+
+      .login-box {
+        margin-top:60px;
+        margin-left:100px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        max-width: 350px;
+        width: 100%;
+       
+      }
+
+      .login-box h3 {
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 1.5em;
+        text-align: center;
+      }
+
+      .input-group {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2em;
+        color: #888;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px 10px 10px 40px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1em;
+        color: #333;
+      }
+
+      input[type="email"]:focus,
+      input[type="password"]:focus {
+        border-color: #ff6347;
+        outline: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #ff6347;
+        color: #ffffff;
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #ff7f50;
+      }
+
+      .register-link {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+        text-align: center;
+      }
+
+      .register-link a {
+        color: #ff6347;
+        text-decoration: none;
+      }
+
+      .register-link a:hover {
+        text-decoration: underline;
+      }
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #222;
+            color: #f5c518;
+            padding: 1em 0;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            margin-top: 0px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2em;
+        }
+
+        .navbar h1 {
+            font-size: 1.8em;
+            color: #f5c518;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar a {
+            color: #f5c518;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffd700;
+        }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+          <h1>Movie Tickets</h1>
+          <ul>
+              <li><a href="/register">Register</a></li>
+              <li><a href="/index">Home</a></li>
+          </ul>
+      </nav>
+  </header>
+  <br><br>
+    <div class="content-wrapper">
+
+      <div>
+        <!-- <h2>Online Movie Ticket Booking System</h2> -->
+        <div class="login-box">
+          <h3>Admin Login</h3>
+          <form action="/alogin" method="post">
+            <div class="input-group">
+              <span class="icon">📧</span>
+              <input type="email" name="email" placeholder="Username"  />
+            </div>
+            <div class="input-group">
+              <span class="icon">🔒</span>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+              
+              />
+            </div>
+            <% if (errorMessage) { %>
+                <p style="color: red;"><%= errorMessage %></p>
+            <% } %>
+            <button type="submit">Login</button>
+            <!-- <p class="register-link">
+              Don't have an account? <a href="register.html">Register</a>
+            </p> -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

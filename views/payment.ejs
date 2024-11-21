@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Movie Ticket Payment</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif; /* Stylish font */
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      header {
+        width: 100%;
+        background-color: #222;
+        color: #f5c518;
+        padding: 1em 0;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1em 2em;
+        width: 100%;
+      }
+
+      .navbar h1 {
+        font-size: 1.8em;
+        color: #f5c518;
+        font-family: "Georgia", serif;
+        text-shadow: 1px 1px 2px #000;
+      }
+
+      .navbar ul {
+        list-style-type: none;
+        display: flex;
+      }
+
+      .navbar li {
+        margin: 0 15px;
+      }
+
+      .navbar a {
+        color: #f5c518;
+        text-decoration: none;
+        font-size: 1em;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      .navbar a:hover {
+        color: #ffd700;
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 80%;
+        max-width: 1200px;
+        margin-top: 30px; /* Reduced margin from 50px to 30px */
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        animation: slideIn 0.8s ease-in-out;
+      }
+
+      .movie-summary,
+      .payment-details {
+        flex: 1;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        margin: 0 10px;
+      }
+
+      .movie-summary {
+        background-color: #f1f8fb;
+        color: #333;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      .payment-details {
+        background-color: #f5f1f3;
+        color: #333;
+        padding: 15px; /* Adjusted padding for a more compact look */
+        margin-top: -10px; /* Moves the section slightly upwards */
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      .movie-summary h2,
+      .payment-details h2 {
+        text-align: center;
+        color: #333;
+        font-family: "Georgia", serif;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      /* Table Styling for Movie Summary */
+      .movie-summary table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      .movie-summary th,
+      .movie-summary td {
+        text-align: left;
+        padding: 10px;
+        font-size: 1rem;
+      }
+
+      .movie-summary th {
+        background-color: #d9eaf7;
+      }
+
+      .movie-summary td {
+        background-color: #e6f0fb;
+      }
+
+      .movie-summary table tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      /* Payment Details Table */
+      .payment-details table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .payment-details th,
+      .payment-details td {
+        text-align: left;
+        padding: 10px;
+        font-size: 1rem;
+      }
+
+      .payment-details th {
+        background-color: #d1e7f2;
+      }
+
+      .payment-details td {
+        background-color: #e3f2fd;
+      }
+
+      /* Form Styling */
+      .payment-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem; /* Reduced gap between elements */
+      }
+
+      .payment-form label {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .payment-form input {
+        padding: 6px; /* Reduced padding for smaller input size */
+        font-size: 0.85rem; /* Smaller font size */
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        transition: border 0.3s;
+        width: 100%;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .payment-form input:focus {
+        border-color: #50e3c2;
+        outline: none;
+      }
+
+      .payment-btn {
+        padding: 12px;
+        font-size: 1.1rem;
+        background-color: #f5a623;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-align: center;
+        width: 100%;
+      }
+
+      .payment-btn:hover {
+        background-color: #e6932d;
+      }
+
+      /* Error messages styling */
+      .error-message {
+        color: red;
+        font-size: 0.8rem; /* Reduced font size */
+        margin-top: 2px; /* Small margin for close positioning */
+        padding: 0;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideIn {
+        0% {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          align-items: center;
+          width: 90%;
+        }
+
+        .movie-summary,
+        .payment-details {
+          width: 100%;
+          margin-bottom: 20px;
+        }
+
+        .payment-btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <h1>Movie Tickets</h1>
+        <ul>
+          <li><a href="/index">Logout</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="movie-summary">
+        <h2>Movie Summary</h2>
+        <table>
+          <tr>
+            <th>Movie Title</th>
+            <td><%= movie %></td>
+          </tr>
+          <tr>
+            <th>Theatre</th>
+            <td><%= theatre %></td>
+          </tr>
+          <tr>
+            <th>Showtime</th>
+            <td><%= showtime %></td>
+          </tr>
+          <tr>
+            <th>Seats</th>
+            <td><%= seats %></td>
+          </tr>
+          <tr>
+            <th>Total Amount</th>
+            <td>₹<%= amount %></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="payment-details">
+        <h2>Payment Details</h2>
+
+        <form id="paymentForm" method="POST" class="payment-form" action="/processPayment">
+          <!-- Pass movie, theatre, showtime, seats, and amount as hidden fields -->
+
+          <input type="hidden" name="movieTitle" value="<%= movie %>" />
+          <input type="hidden" name="theatreId" value="<%= theatre %>" />
+          <input type="hidden" name="showtime" value="<%= showtime %>" />
+          <input type="hidden" name="seats" value="<%= seats %>" />
+          <input type="hidden" name="amount" value="<%= amount %>" />
+
+
+          <label for="cardNumber">Card Number:</label>
+          <input type="text" id="cardNumber" name="cardNumber" />
+          <div id="cardNumberError" class="error-message"></div>
+
+          <label for="cardExpiry">Expiry Date (MM/YY):</label>
+          <input type="text" id="cardExpiry" name="cardExpiry" />
+          <div id="expiryError" class="error-message"></div>
+
+          <label for="cardCVC">CVC:</label>
+          <input type="text" id="cardCVC" name="cardCVC" />
+          <div id="cvcError" class="error-message"></div>
+
+          <!-- Pass movie, theatre, showtime, seats, and amount as hidden fields -->
+          
+
+          <button type="submit" class="payment-btn">Pay ₹<%= amount %></button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const paymentForm = document.getElementById("paymentForm");
+      const cardNumberError = document.getElementById("cardNumberError");
+      const expiryError = document.getElementById("expiryError");
+      const cvcError = document.getElementById("cvcError");
+
+      paymentForm.addEventListener("submit", function (event) {
+        let isValid = true;
+
+        // Clear previous errors
+        cardNumberError.textContent = "";
+        expiryError.textContent = "";
+        cvcError.textContent = "";
+
+        // Validate Card Number
+        const cardNumber = document.getElementById("cardNumber").value;
+        if (!cardNumber.match(/^\d{16}$/)) {
+          cardNumberError.textContent =
+            "Please enter a valid 16-digit card number.";
+          isValid = false;
+        }
+
+        // Validate Expiry Date
+        const cardExpiry = document.getElementById("cardExpiry").value;
+        if (!cardExpiry.match(/^\d{2}\/\d{2}$/)) {
+          expiryError.textContent =
+            "Please enter a valid expiry date in MM/YY format.";
+          isValid = false;
+        }
+
+        // Validate CVC
+        const cardCVC = document.getElementById("cardCVC").value;
+        if (!cardCVC.match(/^\d{3}$/)) {
+          cvcError.textContent = "Please enter a valid 3-digit CVC.";
+          isValid = false;
+        }
+
+        // Check if form is valid
+        if (isValid) {
+          // Set the action URL with query parameters
+          // const movie = "<%= movie %>";
+          // const theatre = "<%= theatre %>";
+          // const showtime = "<%= showtime %>";
+          // const seats = "<%= seats %>";
+          // const amount = "<%= amount %>";
+
+          alert("Payment successful!");
+          return true;
+          // Append query parameters
+          //paymentForm.action = /processPayment?movie=${encodeURIComponent(movie)}&theatre=${encodeURIComponent(theatre)}&showtime=${encodeURIComponent(showtime)}&seats=${encodeURIComponent(seats)}&amount=${encodeURIComponent(amount)};
+        } else {
+          // Prevent form submission if validation fails
+          event.preventDefault();
+        }
+      });
+    </script>
+  </body>
+</html>

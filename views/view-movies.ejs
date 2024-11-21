@@ -1,0 +1,216 @@
+<!-- views/view-movies.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie and Theatre Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+    
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+    
+        header {
+            background-color: #222;
+            color: #f5c518;
+            padding: 1em 0;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+    
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2em;
+        }
+    
+        .navbar h1 {
+            font-size: 1.8em;
+            color: #f5c518;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 2px #000;
+        }
+    
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+    
+        .navbar li {
+            margin: 0 15px;
+        }
+    
+        .navbar a {
+            color: #f5c518;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+    
+        .navbar a:hover {
+            color: #ffd700;
+        }
+    
+        h1 {
+            color: black;
+            text-align: center;
+            font-size: 3em;
+            font-weight: 600;
+            margin-top: 30px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    
+        h2 {
+            font-size: 1.5em;
+            color: #333;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+    
+        .movie-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+    
+        .movie-poster {
+            width: 250px;
+            height: auto;
+            margin-right: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .movie-details {
+            flex: 1;
+            padding: 20px;
+        }
+    
+        .movie-details p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        th {
+            background-color: #f5c518;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+    
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    
+        td {
+            font-size: 1em;
+            color: #555;
+        }
+    
+        td img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+    
+        /* Add spacing between poster and table */
+        .movie-container table {
+            margin-left: 20px;
+            flex: 1;
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>Movie Tickets</h1>
+            <ul>
+                <li><a href="/admin-home">Home</a></li>
+                <li><a href="/index">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Movie and Theatre Details</h1>
+    
+    <% movies.forEach(movie => { %>
+        <div class="movie-container">
+            <!-- Movie Poster -->
+            <img src="<%= movie.posterUrl %>" alt="<%= movie.title %> Poster" class="movie-poster">
+
+            <div class="movie-details">
+                <h2><%= movie.title %> - <%= movie.language %> (<%= movie.genre %>)</h2>
+                <p>Location: <%= movie.location %> | Release Date: <%= movie.releaseDate.toDateString() %></p>
+                
+                <!-- Movie Theatres and Showtimes Table -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Theatre Name</th>
+                            <th>Theatre Location</th>
+                            <th>Total Seats</th>
+                            <th>Showtime</th>
+                            <th>Booked Seats</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% movie.theatres.forEach(theatre => { %>
+                            <% theatre.showtimes.forEach(showtime => { %>
+                                <tr>
+                                    <td><%= theatre.name %></td>
+                                    <td><%= theatre.location %></td>
+                                    <td><%= theatre.availableSeats %></td>
+                                    <td><%= showtime.time %></td>
+                                    <td><%= showtime.bookedSeats.join(", ") %></td>
+                                </tr>
+                            <% }) %>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% }) %>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+<h2>Select Seats for <%= theatre.name %></h2>
+<form action="/book-seats/<%= theatre._id %>" method="post">
+    <div>
+        <% theatre.seats.forEach(seat => { %>
+            <label>
+                <input type="checkbox" name="selectedSeats" value="<%= seat.seatNumber %>"
+                <%= seat.isAvailable ? "" : "disabled" %> />
+                <%= seat.seatNumber %> <%= seat.isAvailable ? "" : "(Booked)" %>
+            </label>
+        <% }) %>
+    </div>
+    <button type="submit">Confirm Booking</button>
+</form>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Ticket</title>
+</head>
+<body>
+  <form action="/book" method="POST">
+    <label for="movieName">Movie Name:</label>
+    <input type="text" name="movieName" required>
+    <label for="theater">Theater:</label>
+    <input type="text" name="theater" required>
+    <label for="showTime">Show Time:</label>
+    <input type="datetime-local" name="showTime" required>
+    <label for="seats">Seats:</label>
+    <input type="text" name="seats" placeholder="A1, A2, A3" required>
+    <button type="submit">Book Ticket</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<h2>Theatres for <%= movie.title %></h2>
+<% theatres.forEach(theatre => { %>
+    <div>
+        <h3><%= theatre.name %></h3>
+        <p>Location: <%= theatre.location %></p>
+        <a href="/book-seats/<%= theatre._id %>">
+            <button>Select Theatre</button>
+        </a>
+    </div>
+<% }) %>

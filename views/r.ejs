@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: flex-start;
+            min-height: 100vh;
+            background-image: url("https://t3.ftcdn.net/jpg/01/41/48/32/360_F_141483279_Ed0Wx0LF9tfF7zGVRYG7Kv5fL0suXYEb.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            background-color: #222;
+            color: #f5c518;
+            padding: 1em 0;
+            position: sticky;
+            top: 0;
+            width: 100vw; /* Makes header span the full viewport width */
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2em;
+            max-width: 1200px; /* Restricting the width to make it centered on large screens */
+            margin: 0 auto; /* Centers the navbar content */
+        }
+
+        .navbar h1 {
+            font-size: 1.8em;
+            color: #f5c518;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 15px;
+        }
+
+        .navbar a {
+            color: #f5c518;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffd700;
+        }
+
+        .register-container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin-top: 150px;
+            margin-left: 0;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+        }
+
+        .form-field {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-field input:focus {
+            border-color: #5c9ded;
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #5c9ded;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #4a8fd4;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <h1>Movie Tickets</h1>
+            <ul>
+                <li><a href="C:\Users\Admin\movie-ticket-booking\login.html">Login</a></li>
+                <li><a href="C:\Users\Admin\movie-ticket-booking\reg.html">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="register-container">
+        <h2>Register</h2>
+        <form id="registerForm" method="post" action="/register">
+            <div class="form-field">
+                <input type="text" id="name" name="username" placeholder="Full Name" >
+                <span id="nameError" class="error-msg"></span>
+            </div>
+            <div class="form-field">
+                <input type="text" id="email" name="email" placeholder="Email" >
+                <span id="emailError" class="error-msg"></span>
+            </div>
+            <div class="form-field">
+                <input type="password" id="password" name="password" placeholder="Password" >
+                <span id="passwordError" class="error-msg"></span>
+            </div>
+            <div class="form-field">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" >
+                <span id="confirmPasswordError" class="error-msg"></span>
+            </div>
+            
+            <button type="submit" class="submit-btn">Create Account</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript validation before form submission
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirm_password").value;
+    
+            let isValid = true;
+    
+            // Reset error messages
+            document.getElementById("nameError").textContent = "";
+            document.getElementById("emailError").textContent = "";
+            document.getElementById("passwordError").textContent = "";
+            document.getElementById("confirmPasswordError").textContent = "";
+    
+            // Validation checks
+            if (name === "") {
+                document.getElementById("nameError").textContent = "Name is required.";
+                isValid = false;
+            }
+    
+            if (!validateEmail(email)) {
+                document.getElementById("emailError").textContent = "Please enter a valid email.";
+                isValid = false;
+            }
+    
+            if (password === "") {
+                document.getElementById("passwordError").textContent = "Password is required.";
+                isValid = false;
+            } else if (password.length < 6) {
+                document.getElementById("passwordError").textContent = "Password must be at least 6 characters.";
+                isValid = false;
+            }
+    
+            if (confirmPassword === "") {
+                document.getElementById("confirmPasswordError").textContent = "Please confirm your password.";
+                isValid = false;
+            } else if (confirmPassword !== password) {
+                document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+                isValid = false;
+            }
+    
+            // If the form is valid, allow it to submit to the backend
+            if (isValid) {
+                // Proceed with form submission
+                alert("registration successfull!!");
+                return true;
+            } else {
+                // Prevent form submission if validation fails
+                event.preventDefault();
+            }
+        });
+    
+        function validateEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+    </script>
+    
+
+</body>
+</html>

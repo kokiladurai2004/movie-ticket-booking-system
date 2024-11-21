@@ -1,0 +1,188 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Show - <%= movie.title %></title>
+    
+    <style>
+        .row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .seat {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            background-color: #ddd;
+            border: 1px solid #bbb;
+            cursor: pointer;
+        }
+
+        .seat.selected {
+            background-color: #4CAF50; /* Green for selected seats */
+        }
+
+        .seat:disabled {
+            background-color: #f44336; /* Red for booked seats */
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Book Show for <%= movie.title %></h1>
+    </header>
+    <section>
+        <h2>Select Theatre and Showtime</h2>
+        <form name="myForm" method="POST" action="/book/<%= movie.title %>/seat">
+            <div>
+                <label for="theatreSelect">Select Theatre:</label>
+                <select id="theatreSelect" name="theatre" onchange="updateShowtimes()" required>
+                    <option value="">Select a Theatre</option>
+                    <% movie.theatres.forEach((theatre, index) => { %>
+                        <option value="<%= JSON.stringify(theatre) %>">
+                            <!-- <option value="<%= theatre.name %>"> -->
+                                   <%= theatre.name %> - <%= theatre.location %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div id="showtimes">
+        
+            </div>
+
+            <div>
+                <label for="seats">Seats: </label>
+                <input type="number" id="seatsInput" name="seats" min="1" required onchange="generateSeatingLayout()">
+            </div>
+
+            <div id="seatingLayout">
+               
+            </div>
+
+            <button type="button" onclick="showSummary()">Show Summary</button>
+        </form>
+    </section>
+
+    <section id="summary">
+        
+    </section>
+    <script>
+        let selectedSeats = [];
+
+       
+
+        function updateShowtimes() {
+    // Retrieve the selected theatre's value as JSON
+    const selectedTheatreJSON = document.getElementById('theatreSelect').value;
+    
+    if (!selectedTheatreJSON) {
+        console.log("No theatre selected.");
+        alert("No theatre selected.");
+        return;
+    }
+
+    // Parse the JSON value of the selected theatre
+    const theatreDetails = JSON.parse(selectedTheatreJSON);
+    const showtimeContainer = document.getElementById('showtimes');
+    const seatsInput = document.getElementById('seatsInput');
+
+    // Clear previous showtimes and seats options
+    showtimeContainer.innerHTML = '';
+    seatsInput.max = theatreDetails.availableSeats;
+
+    // Display new showtimes
+    theatreDetails.showtimes.forEach(showtime => {
+        const li = document.createElement('li');
+        li.innerHTML = `<label>
+            <input type="radio" name="showtime" value="${showtime.time}" required>
+            ${showtime.time}
+        </label>`;
+        showtimeContainer.appendChild(li);
+    });
+
+    // Generate seating layout for the selected showtime
+    generateSeatingLayout(theatreDetails);
+}
+
+
+        // Function to generate seating layout for the selected showtime
+        function generateSeatingLayout(theatreDetails) {
+            console.log(theatreDetails);
+            const numSeats = parseInt(document.getElementById('seatsInput').value);
+            const layoutContainer = document.getElementById('seatingLayout');
+            layoutContainer.innerHTML = ''; // Clear any previous layout
+
+            if (numSeats > 0 && theatreDetails) {
+                const bookedSeats = new Set(); // Use a Set for easy lookup of booked seats
+
+                // Collect all booked seats across showtimes for the selected theatre
+                theatreDetails.showtimes.forEach(showtime => {
+                    showtime.bookedSeats.forEach(seat => {
+                        bookedSeats.add(seat); // Add each booked seat to the Set
+                    });
+                });
+
+                let seatCount = 0;
+                const rowCount = 5; // Example: 5 rows
+                const colCount = 10; // Example: 10 seats per row
+
+                // Generate the layout (simple grid)
+                for (let i = 0; i < rowCount; i++) {
+                    const row = document.createElement('div');
+                    row.classList.add('row');
+                    for (let j = 0; j < colCount; j++) {
+                        const seat = document.createElement('button');
+                        seat.classList.add('seat');
+                        seat.innerText = seatCount + 1;
+
+                        // Disable the seat if it's already booked
+                        seat.disabled = bookedSeats.has(seatCount);
+
+                        seat.addEventListener('click', () => selectSeat(seat, seatCount));
+                        row.appendChild(seat);
+                        seatCount++;
+                    }
+                    layoutContainer.appendChild(row);
+                }
+            }
+        }
+
+        // Function to select and update seat selection
+        function selectSeat(seat, seatNumber) {
+            if (seat.classList.contains('selected')) {
+                seat.classList.remove('selected');
+                selectedSeats = selectedSeats.filter(num => num !== seatNumber);
+            } else {
+                seat.classList.add('selected');
+                selectedSeats.push(seatNumber);
+            }
+        }
+
+        // Show the summary of selected seats and total amount
+        function showSummary() {
+            alert("clicked");
+            // console.log("Clicked");
+            const amount = selectedSeats.length * 150; // 150 rupees per seat
+            const summaryContainer = document.getElementById('summary');
+            const seatsSummary = selectedSeats.map(seat => `Seat ${seat + 1}`).join(', ');
+
+            summaryContainer.innerHTML = `
+                <h3>Booking Summary</h3>
+                <p><strong>Movie:</strong> <%= movie.title %></p>
+                <p><strong>Selected Seats:</strong> ${seatsSummary}</p>
+                <p><strong>Total Amount:</strong> ₹${amount}</p>
+                <button onclick="proceedToPayment()">Proceed to Payment</button>
+            `;
+        }
+
+        // Placeholder function for proceeding to payment
+        function proceedToPayment() {
+            alert("Proceeding to Payment");
+        }
+    </script>
+</body>
+</html>
+
